@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartão Digital de Paciente</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f2f5;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            margin: 20px;
+            overflow: hidden;
+        }
+
+        .patient-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto;
+            display: block;
+            border: 2px solid #e0e0e0;
+        }
+
+        .patient-info {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .patient-info h2 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .patient-info p {
+            font-size: 1rem;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 10px 5px;
+            transition: background-color 0.3s, transform 0.2s;
+            width: calc(50% - 10px);
+            display: inline-block;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .section {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 0 15px;
+            margin: 10px 0;
+        }
+
+        .section.active {
+            max-height: 500px;
+            padding: 15px;
+        }
+
+        .section h3 {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .section ul {
+            list-style: none;
+        }
+
+        .section ul li {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                width: 95%;
+                padding: 15px;
+            }
+
+            .button {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <img src="https://via.placeholder.com/100" alt="Foto do Paciente" class="patient-photo">
+        <div class="patient-info">
+            <h2 id="patient-name"></h2>
+            <p><strong>Data de Nascimento:</strong> <span id="patient-dob"></span></p>
+            <p><strong>Naturalidade:</strong> <span id="patient-origin"></span></p>
+            <p><strong>Tipo Sanguíneo:</strong> <span id="patient-blood"></span></p>
+            <p><strong>ID do Paciente:</strong> <span id="patient-id"></span></p>
+        </div>
+        <button class="button" onclick="toggleSection('medications')">Medicamentos</button>
+        <button class="button" onclick="toggleSection('diseases')">Doenças</button>
+        <div id="medications" class="section">
+            <h3>Histórico de Medicamentos</h3>
+            <ul id="medication-list"></ul>
+        </div>
+        <div id="diseases" class="section">
+            <h3>Doenças</h3>
+            <ul id="disease-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        const patientData = {
+            name: "Mario Gomez",
+            dob: "15/03/1985",
+            origin: "Inhambane,MZ ",
+            bloodType: "O+",
+            patientId: "123456789",
+            medications: [
+                {
+                    name: "Paracetamol",
+                    instructions: "500mg a cada 6 horas",
+                    period: "01/01/2025 - 15/01/2025"
+                },
+                {
+                    name: "Ibuprofeno",
+                    instructions: "400mg a cada 8 horas",
+                    period: "10/02/2025 - Atual"
+                }
+            ],
+            diseases: [
+                {
+                    name: "Hipertensão",
+                    symptoms: "Pressão alta, dores de cabeça"
+                },
+                {
+                    name: "Diabetes Tipo 2",
+                    symptoms: "Fadiga, sede excessiva"
+                }
+            ]
+        };
+
+        function populatePatientData() {
+            document.getElementById('patient-name').textContent = patientData.name;
+            document.getElementById('patient-dob').textContent = patientData.dob;
+            document.getElementById('patient-origin').textContent = patientData.origin;
+            document.getElementById('patient-blood').textContent = patientData.bloodType;
+            document.getElementById('patient-id').textContent = patientData.patientId;
+
+            const medicationList = document.getElementById('medication-list');
+            patientData.medications.forEach(med => {
+                const li = document.createElement('li');
+                li.textContent = `${med.name}: ${med.instructions} (${med.period})`;
+                medicationList.appendChild(li);
+            });
+
+            const diseaseList = document.getElementById('disease-list');
+            patientData.diseases.forEach(disease => {
+                const li = document.createElement('li');
+                li.textContent = `${disease.name}: ${disease.symptoms}`;
+                diseaseList.appendChild(li);
+            });
+        }
+
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            section.classList.toggle('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', populatePatientData);
+    </script>
+</body>
+</html>
